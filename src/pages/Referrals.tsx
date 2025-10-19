@@ -1,106 +1,114 @@
 
 import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
-import { Users, Share, Copy, Gift } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { Input } from '../components/ui/input';
+import { Users, Copy, Gift, Share } from 'lucide-react';
 import { toast } from 'sonner';
-
-const referralHistory = [
-  { id: 1, name: 'Alice Johnson', joined: '2024-01-18', earned: 100 },
-  { id: 2, name: 'Bob Smith', joined: '2024-01-15', earned: 100 },
-  { id: 3, name: 'Carol Davis', joined: '2024-01-12', earned: 100 },
-];
 
 export default function Referrals() {
   const { user } = useAuth();
+  const [referralCode] = useState(user?.referralCode || 'REF123456');
 
   const copyReferralCode = () => {
-    navigator.clipboard.writeText(user?.referralCode || '');
-    toast.success('Referral code copied to clipboard!');
+    navigator.clipboard.writeText(referralCode);
+    toast.success('Referral code copied!');
   };
 
   const shareReferral = () => {
     if (navigator.share) {
       navigator.share({
         title: 'Join EarnApp',
-        text: `Use my referral code ${user?.referralCode} to get bonus coins!`,
-        url: window.location.origin
+        text: `Use my referral code ${referralCode} to get bonus coins!`,
+        url: `https://earnapp.com/ref/${referralCode}`
       });
     } else {
       copyReferralCode();
     }
   };
 
+  const referralHistory = [
+    { name: 'John Doe', date: '2024-01-15', bonus: 100, status: 'Active' },
+    { name: 'Jane Smith', date: '2024-01-12', bonus: 100, status: 'Active' },
+    { name: 'Mike Johnson', date: '2024-01-10', bonus: 100, status: 'Pending' },
+  ];
+
   return (
     <div className="p-4 space-y-6 max-w-md mx-auto">
+      <div className="text-center">
+        <h1 className="text-2xl font-bold mb-2">Referrals</h1>
+        <p className="text-muted-foreground">Invite friends and earn together</p>
+      </div>
+
       {/* Referral Stats */}
-      <Card className="earning-gradient text-white">
-        <CardContent className="p-6 text-center">
-          <Users className="w-12 h-12 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold">Invite Friends</h1>
-          <p className="opacity-90 mb-4">Earn 100 coins for each friend</p>
-          <div className="bg-white/20 rounded-lg p-4">
-            <p className="text-sm opacity-90">Your Referral Code</p>
-            <p className="text-2xl font-bold">{user?.referralCode}</p>
+      <div className="grid grid-cols-2 gap-4">
+        <Card>
+          <CardContent className="p-4 text-center">
+            <Users className="w-8 h-8 mx-auto mb-2 text-primary" />
+            <p className="text-2xl font-bold">12</p>
+            <p className="text-sm text-muted-foreground">Friends Invited</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-4 text-center">
+            <Gift className="w-8 h-8 mx-auto mb-2 text-primary" />
+            <p className="text-2xl font-bold">1,200</p>
+            <p className="text-sm text-muted-foreground">Bonus Earned</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Referral Code */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Your Referral Code</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex gap-2">
+            <Input value={referralCode} readOnly className="font-mono" />
+            <Button variant="outline" onClick={copyReferralCode}>
+              <Copy className="w-4 h-4" />
+            </Button>
+          </div>
+          
+          <Button onClick={shareReferral} className="w-full">
+            <Share className="w-4 h-4 mr-2" />
+            Share Referral Link
+          </Button>
+          
+          <div className="text-center p-4 bg-muted/50 rounded-lg">
+            <p className="text-sm font-medium mb-1">Earn 100 coins per referral!</p>
+            <p className="text-xs text-muted-foreground">
+              Your friends get 50 bonus coins when they sign up
+            </p>
           </div>
         </CardContent>
       </Card>
 
-      {/* Actions */}
-      <div className="grid grid-cols-2 gap-4">
-        <Button onClick={shareReferral} className="flex-col h-auto py-4">
-          <Share className="w-6 h-6 mb-2" />
-          Share Code
-        </Button>
-        
-        <Button onClick={copyReferralCode} variant="outline" className="flex-col h-auto py-4">
-          <Copy className="w-6 h-6 mb-2" />
-          Copy Code
-        </Button>
-      </div>
-
-      {/* Referral Stats */}
-      <div className="grid grid-cols-2 gap-4">
-        <Card>
-          <CardContent className="p-4 text-center">
-            <Users className="w-6 h-6 text-primary mx-auto mb-2" />
-            <p className="text-2xl font-bold">{referralHistory.length}</p>
-            <p className="text-sm text-muted-foreground">Friends Joined</p>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardContent className="p-4 text-center">
-            <Gift className="w-6 h-6 text-coin-gold mx-auto mb-2" />
-            <p className="text-2xl font-bold">{referralHistory.length * 100}</p>
-            <p className="text-sm text-muted-foreground">Coins Earned</p>
-          </CardContent>
-        </Card>
-      </div>
-
       {/* Referral History */}
       <Card>
         <CardHeader>
-          <CardTitle>Your Referrals</CardTitle>
+          <CardTitle>Referral History</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3">
-          {referralHistory.map((referral) => (
-            <div key={referral.id} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                  <Users className="w-4 h-4 text-primary" />
-                </div>
+        <CardContent>
+          <div className="space-y-3">
+            {referralHistory.map((referral, index) => (
+              <div key={index} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
                 <div>
-                  <p className="font-medium">{referral.name}</p>
-                  <p className="text-sm text-muted-foreground">Joined {referral.joined}</p>
+                  <p className="font-medium text-sm">{referral.name}</p>
+                  <p className="text-xs text-muted-foreground">{referral.date}</p>
+                </div>
+                <div className="text-right">
+                  <p className="font-bold text-primary">+{referral.bonus}</p>
+                  <p className={`text-xs ${referral.status === 'Active' ? 'text-green-600' : 'text-yellow-600'}`}>
+                    {referral.status}
+                  </p>
                 </div>
               </div>
-              <div className="text-right">
-                <p className="font-bold text-coin-gold">+{referral.earned}</p>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </CardContent>
       </Card>
     </div>

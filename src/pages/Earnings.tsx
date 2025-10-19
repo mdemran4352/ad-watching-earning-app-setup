@@ -1,63 +1,85 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
-import { TrendingUp, Calendar, Coins, Eye } from 'lucide-react';
-
-const earningHistory = [
-  { id: 1, type: 'Ad Watch', amount: 10, date: '2024-01-20 14:30' },
-  { id: 2, type: 'Daily Bonus', amount: 50, date: '2024-01-20 09:00' },
-  { id: 3, type: 'Referral Bonus', amount: 100, date: '2024-01-19 16:45' },
-  { id: 4, type: 'Ad Watch', amount: 10, date: '2024-01-19 15:20' },
-  { id: 5, type: 'Ad Watch', amount: 10, date: '2024-01-19 14:10' },
-];
+import { TrendingUp, Calendar, Coins, Target } from 'lucide-react';
 
 export default function Earnings() {
+  const earningsData = [
+    { date: '2024-01-15', amount: 150, type: 'Ad Watch' },
+    { date: '2024-01-14', amount: 50, type: 'Daily Bonus' },
+    { date: '2024-01-14', amount: 120, type: 'Ad Watch' },
+    { date: '2024-01-13', amount: 200, type: 'Referral Bonus' },
+  ];
+
   return (
     <div className="p-4 space-y-6 max-w-md mx-auto">
-      {/* Stats Overview */}
+      <div className="text-center">
+        <h1 className="text-2xl font-bold mb-2">Earnings</h1>
+        <p className="text-muted-foreground">Track your earning progress</p>
+      </div>
+
+      {/* Stats Cards */}
       <div className="grid grid-cols-2 gap-4">
         <Card>
           <CardContent className="p-4 text-center">
-            <Calendar className="w-6 h-6 text-primary mx-auto mb-2" />
-            <p className="text-2xl font-bold">180</p>
-            <p className="text-sm text-muted-foreground">Today's Earnings</p>
+            <TrendingUp className="w-8 h-8 mx-auto mb-2 text-primary" />
+            <p className="text-2xl font-bold">2,500</p>
+            <p className="text-sm text-muted-foreground">Total Earned</p>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardContent className="p-4 text-center">
-            <TrendingUp className="w-6 h-6 text-coin-gold mx-auto mb-2" />
-            <p className="text-2xl font-bold">1,250</p>
-            <p className="text-sm text-muted-foreground">This Week</p>
+            <Calendar className="w-8 h-8 mx-auto mb-2 text-primary" />
+            <p className="text-2xl font-bold">520</p>
+            <p className="text-sm text-muted-foreground">This Month</p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Earning History */}
+      {/* Progress to Next Payout */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Target className="w-5 h-5" />
+            Next Payout Goal
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-2">
+            <div className="flex justify-between text-sm">
+              <span>Progress to 5,000 coins</span>
+              <span>1,250 / 5,000</span>
+            </div>
+            <div className="w-full bg-muted rounded-full h-2">
+              <div className="bg-primary h-2 rounded-full" style={{ width: '25%' }}></div>
+            </div>
+            <p className="text-xs text-muted-foreground">3,750 coins remaining for withdrawal</p>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Recent Earnings */}
       <Card>
         <CardHeader>
           <CardTitle>Recent Earnings</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3">
-          {earningHistory.map((earning) => (
-            <div key={earning.id} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                  {earning.type === 'Ad Watch' ? (
-                    <Eye className="w-4 h-4 text-primary" />
-                  ) : (
-                    <Coins className="w-4 h-4 text-coin-gold" />
-                  )}
+        <CardContent>
+          <div className="space-y-3">
+            {earningsData.map((earning, index) => (
+              <div key={index} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                    <Coins className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-sm">{earning.type}</p>
+                    <p className="text-xs text-muted-foreground">{earning.date}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="font-medium">{earning.type}</p>
-                  <p className="text-sm text-muted-foreground">{earning.date}</p>
-                </div>
+                <span className="font-bold text-primary">+{earning.amount}</span>
               </div>
-              <div className="text-right">
-                <p className="font-bold text-primary">+{earning.amount}</p>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </CardContent>
       </Card>
     </div>
