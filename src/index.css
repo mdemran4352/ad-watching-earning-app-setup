@@ -7,7 +7,7 @@
   :root {
     /* Primary Colors */
     --primary: 142 76% 36%;
-    --primary-foreground: 355 7% 97%;
+    --primary-foreground: 0 0% 98%;
     --secondary: 210 40% 98%;
     --secondary-foreground: 222.2 84% 4.9%;
     --accent: 210 40% 96%;
@@ -28,11 +28,11 @@
     
     /* Status Colors */
     --success: 142 76% 36%;
-    --success-foreground: 355 7% 97%;
+    --success-foreground: 0 0% 98%;
     --warning: 38 92% 50%;
-    --warning-foreground: 48 96% 89%;
+    --warning-foreground: 0 0% 98%;
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 98%;
     
     /* Muted */
     --muted: 210 40% 96%;
@@ -40,22 +40,15 @@
     
     /* Earning App Specific */
     --coin-gold: 45 93% 58%;
-    --coin-gold-foreground: 26 83% 14%;
-    --earning-green: 142 76% 36%;
-    --earning-green-foreground: 355 7% 97%;
-    --withdraw-blue: 221 83% 53%;
-    --withdraw-blue-foreground: 210 40% 98%;
-    
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(142 76% 36%) 0%, hsl(142 76% 46%) 100%);
-    --gradient-coin: linear-gradient(135deg, hsl(45 93% 58%) 0%, hsl(38 92% 50%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(142 76% 36%) 0%, hsl(221 83% 53%) 100%);
+    --coin-gold-foreground: 0 0% 0%;
+    --earning-gradient: linear-gradient(135deg, hsl(142 76% 36%) 0%, hsl(45 93% 58%) 100%);
+    --withdraw-gradient: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(142 76% 36%) 100%);
     
     /* Shadows */
-    --shadow-card: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --shadow-earning: 0 10px 15px -3px rgb(34 197 94 / 0.1), 0 4px 6px -2px rgb(34 197 94 / 0.05);
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     
-    /* Border Radius */
     --radius: 0.5rem;
   }
 
@@ -67,7 +60,7 @@
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
     --primary: 142 76% 36%;
-    --primary-foreground: 355 7% 97%;
+    --primary-foreground: 0 0% 98%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
     --muted: 217.2 32.6% 17.5%;
@@ -92,32 +85,29 @@
 }
 
 @layer components {
-  .gradient-primary {
-    background: var(--gradient-primary);
+  .earning-gradient {
+    background: var(--earning-gradient);
   }
   
-  .gradient-coin {
-    background: var(--gradient-coin);
+  .withdraw-gradient {
+    background: var(--withdraw-gradient);
   }
   
-  .gradient-hero {
-    background: var(--gradient-hero);
+  .coin-shine {
+    animation: coinShine 2s ease-in-out infinite;
   }
   
-  .shadow-earning {
-    box-shadow: var(--shadow-earning);
+  @keyframes coinShine {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.05) rotate(5deg); }
   }
   
-  .animate-coin-bounce {
-    animation: coinBounce 0.6s ease-in-out;
+  .pulse-glow {
+    animation: pulseGlow 2s ease-in-out infinite;
   }
   
-  @keyframes coinBounce {
-    0%, 100% { transform: translateY(0) scale(1); }
-    50% { transform: translateY(-10px) scale(1.1); }
-  }
-  
-  .animate-pulse-slow {
-    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 5px hsl(var(--primary)); }
+    50% { box-shadow: 0 0 20px hsl(var(--primary)), 0 0 30px hsl(var(--primary)); }
   }
 }

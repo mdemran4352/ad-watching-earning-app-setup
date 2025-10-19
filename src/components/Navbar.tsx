@@ -1,35 +1,37 @@
 
 import { useAuth } from '../contexts/AuthContext';
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Button } from './ui/button';
-import { Coins, Bell } from 'lucide-react';
+import { Coins, LogOut } from 'lucide-react';
 
-const Navbar = () => {
-  const { user } = useAuth();
+export default function Navbar() {
+  const { user, logout } = useAuth();
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
-      <div className="max-w-md mx-auto px-4 h-16 flex items-center justify-between">
-        <div className="flex items-center space-x-3">
-          <Avatar className="h-8 w-8">
-            <AvatarImage src={user?.avatar} />
-            <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
-          </Avatar>
-          <div>
-            <p className="text-sm font-medium text-foreground">Hi, {user?.name}</p>
-            <div className="flex items-center space-x-1">
-              <Coins className="h-3 w-3 text-coin-gold" />
-              <span className="text-xs font-semibold text-coin-gold">{user?.coins?.toLocaleString()}</span>
-            </div>
+    <nav className="bg-card border-b border-border px-4 py-3">
+      <div className="flex items-center justify-between max-w-md mx-auto">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+            <Coins className="w-4 h-4 text-primary-foreground" />
           </div>
+          <span className="font-semibold text-foreground">EarnApp</span>
         </div>
         
-        <Button variant="ghost" size="sm">
-          <Bell className="h-5 w-5" />
-        </Button>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1 bg-coin-gold/10 px-3 py-1 rounded-full">
+            <Coins className="w-4 h-4 text-coin-gold" />
+            <span className="font-bold text-coin-gold">{user?.coins || 0}</span>
+          </div>
+          
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={logout}
+            className="text-muted-foreground hover:text-foreground"
+          >
+            <LogOut className="w-4 h-4" />
+          </Button>
+        </div>
       </div>
     </nav>
   );
-};
-
-export default Navbar;
+}

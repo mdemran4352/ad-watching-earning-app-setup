@@ -12,14 +12,7 @@ import Withdraw from './pages/Withdraw';
 import Leaderboard from './pages/Leaderboard';
 import Referrals from './pages/Referrals';
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60 * 5, // 5 minutes
-      retry: 1,
-    },
-  },
-});
+const queryClient = new QueryClient();
 
 function App() {
   return (
@@ -38,7 +31,7 @@ function App() {
                 <Route path="referrals" element={<Referrals />} />
               </Route>
             </Routes>
-            <Toaster position="top-center" />
+            <Toaster />
           </div>
         </Router>
       </AuthProvider>

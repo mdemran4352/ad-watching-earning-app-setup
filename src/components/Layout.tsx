@@ -1,10 +1,11 @@
 
-import { Outlet, Navigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { Navigate } from 'react-router-dom';
 import Navbar from './Navbar';
 import BottomNav from './BottomNav';
 
-const Layout = () => {
+export default function Layout() {
   const { user, loading } = useAuth();
 
   if (loading) {
@@ -22,12 +23,10 @@ const Layout = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <main className="pb-20 pt-16">
+      <main className="pb-16">
         <Outlet />
       </main>
       <BottomNav />
     </div>
   );
-};
-
-export default Layout;
+}
